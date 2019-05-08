@@ -1,0 +1,17 @@
+@startuml
+
+Splash : val data: me.jameshunt.flow.DeepLinkData
+
+[*] -> Splash
+Splash --> Load
+Load --> ParkingLot
+ParkingLot -> Login
+ParkingLot --> Home
+ParkingLot --> Back
+
+Login --> ParkingLot
+Login -> Home
+
+Home --> Back
+
+@enduml

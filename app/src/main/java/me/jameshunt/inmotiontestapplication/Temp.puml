@@ -1,0 +1,10 @@
+@startuml
+
+[*] -> Temp
+Temp --> Splash
+Splash -> Load
+Load --> Temp
+
+Temp -> Back
+
+@enduml

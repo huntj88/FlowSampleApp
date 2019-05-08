@@ -1,0 +1,2 @@
+include ':app', ':Flow'
+project(':Flow').projectDir = new File('../Flow3/Flow')
