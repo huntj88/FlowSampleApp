@@ -9,6 +9,7 @@ import me.jameshunt.flow.promise.doAlso
 import me.jameshunt.flow.promise.then
 import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.TempFlowController
+import me.jameshunt.inmotiontestapplication.colors.ColorFlowController
 import me.jameshunt.inmotiontestapplication.group.pager.ViewPagerGroupController
 import me.jameshunt.inmotiontestapplication.login.LoginFlowController
 import me.jameshunt.inmotiontestapplication.settings.SettingsFlowController
@@ -47,7 +48,7 @@ class SplashFlowController(viewId: ViewId) : GeneratedSplashController(viewId) {
     override fun onHome(state: Home): Promise<FromHome> {
         val input = ViewPagerGroupController.input(
             pageZero = TempFlowController::class.java,
-            pageOne = TempFlowController::class.java,
+            pageOne = ColorFlowController::class.java,
             pageTwo = SettingsFlowController::class.java
         )
         return this.flowGroup(ViewPagerGroupController::class.java, input).forResult<Unit, FromHome>(

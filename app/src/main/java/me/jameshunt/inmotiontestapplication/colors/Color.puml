@@ -1,0 +1,12 @@
+@startuml
+
+ShowColors: val data: me.jameshunt.inmotiontestapplication.colors.Colors
+ColorSelected: val data: me.jameshunt.inmotiontestapplication.colors.Color
+
+[*] -> GatherData
+GatherData --> ShowColors
+ShowColors --> ColorSelected
+ShowColors --> Back
+ColorSelected --> GatherData
+
+@enduml

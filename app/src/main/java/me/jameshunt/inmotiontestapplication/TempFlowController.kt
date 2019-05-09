@@ -30,7 +30,7 @@ class TempFlowController(viewId: ViewId) : GeneratedTempController(viewId) {
 
     override fun onLoad(state: Load): Promise<FromLoad> {
         return Promise(Unit)
-            .doAlso(on = PromiseDispatch.BACKGROUND) { Thread.sleep(1000) }
+            .doAlso(on = PromiseDispatch.BACKGROUND) { Thread.sleep(3000) }
             .then { Temp }
     }
 }
