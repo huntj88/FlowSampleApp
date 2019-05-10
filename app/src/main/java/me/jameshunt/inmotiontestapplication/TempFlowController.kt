@@ -7,7 +7,6 @@ import me.jameshunt.flow.promise.Promise
 import me.jameshunt.flow.promise.PromiseDispatch
 import me.jameshunt.flow.promise.doAlso
 import me.jameshunt.flow.promise.then
-import me.jameshunt.inmotiontestapplication.login.LoginFlowController
 import me.jameshunt.inmotiontestapplication.splash.SplashFragment
 
 class TempFlowController(viewId: ViewId) : GeneratedTempController(viewId) {

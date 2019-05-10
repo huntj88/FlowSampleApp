@@ -40,6 +40,7 @@ class ColorFlowController(viewId: ViewId): GeneratedColorController(viewId) {
         return this.flow(fragmentProxy = colorsListFragment, input = state.data).forResult<Color, FromShowColors>(
             onBack = { Promise(Back) },
             onComplete = { Promise(ColorSelected(it)) }
+//            onComplete = { Promise(GatherData) }
         )
     }
 

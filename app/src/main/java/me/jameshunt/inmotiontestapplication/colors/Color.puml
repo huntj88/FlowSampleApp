@@ -6,6 +6,7 @@ ColorSelected: val data: me.jameshunt.inmotiontestapplication.colors.Color
 [*] -> GatherData
 GatherData --> ShowColors
 ShowColors --> ColorSelected
+ShowColors --> GatherData
 ShowColors --> Back
 ColorSelected --> GatherData
 

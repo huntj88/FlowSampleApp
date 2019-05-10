@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_recycler.*
@@ -24,16 +25,37 @@ class ColorsListFragment : FlowFragment<Colors, Color>() {
         updateAdapter(input)
     }
 
-    private fun updateAdapter(colors: Colors) {
+    private fun updateAdapter(newColors: Colors) {
         this.recyclerView.adapter
+            ?.let { it as? ColorsAdapter }
             ?.let {
-                // diff needed when resuming existing fragment,
-                // or when flow controller changes fragment data without showing a different fragment first
-                TODO() }
-            ?: run { this.recyclerView.adapter = ColorsAdapter(colors) }
+                if(newColors != it.colors) {
+                    diffItems(newColors)
+                }
+            } ?: run { this.recyclerView.adapter = ColorsAdapter(newColors) }
     }
 
-    private inner class ColorsAdapter(val colors: Colors) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private fun diffItems(newColors: Colors) {
+        val adapter = this.recyclerView.adapter as ColorsAdapter
+
+        val diffCallback = object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = adapter.colors.colors.size
+            override fun getNewListSize(): Int = newColors.colors.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return adapter.colors.colors[oldItemPosition] == newColors.colors[newItemPosition]
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return areItemsTheSame(oldItemPosition, newItemPosition)
+            }
+
+        }
+        DiffUtil.calculateDiff(diffCallback).dispatchUpdatesTo(adapter)
+        adapter.colors = newColors
+    }
+
+    private inner class ColorsAdapter(var colors: Colors) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val colorView = View(parent.context).apply {
                 layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 200)
