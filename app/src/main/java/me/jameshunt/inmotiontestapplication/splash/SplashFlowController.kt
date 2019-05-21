@@ -1,6 +1,5 @@
 package me.jameshunt.inmotiontestapplication.splash
 
-import me.jameshunt.flow.ViewId
 import me.jameshunt.flow.generated.GeneratedSplashController
 import me.jameshunt.flow.generated.GeneratedSplashController.SplashFlowState.*
 import me.jameshunt.flow.promise.Promise
@@ -14,7 +13,7 @@ import me.jameshunt.inmotiontestapplication.group.pager.ViewPagerGroupController
 import me.jameshunt.inmotiontestapplication.login.LoginFlowController
 import me.jameshunt.inmotiontestapplication.settings.SettingsFlowController
 
-class SplashFlowController(viewId: ViewId) : GeneratedSplashController(viewId) {
+class SplashFlowController : GeneratedSplashController() {
 
     private val splashFragment = proxy(SplashFragment::class.java)
     private val parkingLotFragment = proxy(ParkingLotFragment::class.java)

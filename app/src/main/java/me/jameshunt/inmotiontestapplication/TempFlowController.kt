@@ -9,7 +9,7 @@ import me.jameshunt.flow.promise.doAlso
 import me.jameshunt.flow.promise.then
 import me.jameshunt.inmotiontestapplication.splash.SplashFragment
 
-class TempFlowController(viewId: ViewId) : GeneratedTempController(viewId) {
+class TempFlowController : GeneratedTempController() {
 
     private val testFragmentProxy = proxy(TestFragment::class.java)
     private val splashFragmentProxy = proxy(SplashFragment::class.java)

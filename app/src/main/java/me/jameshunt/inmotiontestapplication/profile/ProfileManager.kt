@@ -1,4 +1,4 @@
-package me.jameshunt.inmotiontestapplication.business
+package me.jameshunt.inmotiontestapplication.profile
 
 import me.jameshunt.flow.promise.Promise
 

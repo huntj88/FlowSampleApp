@@ -1,16 +1,15 @@
 package me.jameshunt.inmotiontestapplication.settings
 
 import me.jameshunt.flow.SimpleGroupController
-import me.jameshunt.flow.ViewId
 import me.jameshunt.flow.castFromInput
 import me.jameshunt.flow.generated.GeneratedSettingController
 import me.jameshunt.flow.generated.GeneratedSettingController.SettingFlowState.*
 import me.jameshunt.flow.promise.Promise
 import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.login.LoginFlowController
-import me.jameshunt.inmotiontestapplication.business.ProfileManager
+import me.jameshunt.inmotiontestapplication.profile.ProfileManager
 
-class SettingsFlowController(viewId: ViewId) : GeneratedSettingController(viewId) {
+class SettingsFlowController : GeneratedSettingController() {
 
     private val settingsFragment = proxy(SettingsFragment::class.java)
     private val userSettingsFragment = proxy(UserSettingsFragment::class.java)
