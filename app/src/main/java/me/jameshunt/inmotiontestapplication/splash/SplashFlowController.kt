@@ -57,7 +57,7 @@ class SplashFlowController(viewId: ViewId) : GeneratedSplashController(viewId) {
     }
 
     override fun onLogin(state: Login): Promise<FromLogin> {
-        return this.flow(LoginFlowController::class.java, Unit).forResult<Unit, FromLogin>(
+        return this.flow(controller = LoginFlowController::class.java, input = Unit).forResult<Unit, FromLogin>(
             onBack = { Promise(ParkingLot) },
             onComplete = { Promise(Home) }
         )

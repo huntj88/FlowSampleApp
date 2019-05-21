@@ -1,23 +1,20 @@
-package me.jameshunt.inmotiontestapplication.service
+package me.jameshunt.inmotiontestapplication.business
 
 import me.jameshunt.flow.promise.Promise
 
-object AccountManager {
+object ProfileManager {
 
-    var currentUser: User? = null
+    var profile: Profile? = null
 
     fun login(email: String, password: String): Promise<Boolean> {
         return when (email == "huntj88@gmail.com" && password == "qwert123") {
-            true -> {
-                currentUser = User(email, "james", "hunt")
-                Promise(true)
-            }
+            true -> Promise(true)
             false -> Promise(false)
         }
     }
 }
 
-data class User(
+data class Profile(
     val email: String,
     val firstName: String,
     val lastName: String

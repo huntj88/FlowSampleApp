@@ -11,6 +11,9 @@ class TestFragment: FlowFragment<String, Unit>() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return TextView(context).apply {
+            if(text.isBlank()) {
+                this.text = "no data"
+            }
             setOnClickListener {
                 this@TestFragment.resolve(Unit)
             }

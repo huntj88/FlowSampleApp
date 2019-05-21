@@ -1,12 +1,15 @@
 package me.jameshunt.inmotiontestapplication.login
 
+import android.util.Log
 import me.jameshunt.flow.ViewId
 import me.jameshunt.flow.generated.GeneratedLoginController
 import me.jameshunt.flow.generated.GeneratedLoginController.LoginFlowState.*
 import me.jameshunt.flow.promise.Promise
 import me.jameshunt.flow.promise.then
 import me.jameshunt.flow.proxy
-import me.jameshunt.inmotiontestapplication.service.AccountManager
+import me.jameshunt.inmotiontestapplication.business.Profile
+import me.jameshunt.inmotiontestapplication.business.ProfileFlowController
+import me.jameshunt.inmotiontestapplication.business.ProfileManager
 
 class LoginFlowController(viewId: ViewId) : GeneratedLoginController(viewId) {
     private val loginFragmentProxy = proxy(LoginFragment::class.java)
@@ -20,13 +23,26 @@ class LoginFlowController(viewId: ViewId) : GeneratedLoginController(viewId) {
     }
 
     override fun onCheckCredentials(state: CheckCredentials): Promise<FromCheckCredentials> {
-        return AccountManager
+        return ProfileManager
             .login(email = state.formData.email, password = state.formData.password)
             .then<Boolean, FromCheckCredentials> {
                 when (it) {
-                    true -> Done(Unit)
-                    false -> LoginForm
+                    true -> GetProfile
+                    false -> ShowError
                 }
             }
+    }
+
+    override fun onShowError(state: ShowError): Promise<FromShowError> {
+        Log.d("wow and error", "bad error go away")
+        return Promise(LoginForm)
+    }
+
+    override fun onGetProfile(state: GetProfile): Promise<FromGetProfile> {
+        return this.flow(controller = ProfileFlowController::class.java, input = Unit)
+            .forResult<Profile, FromGetProfile>(
+                onComplete = { Promise(Done(Unit)) },
+                onCatch = { Promise(ShowError) }
+            )
     }
 }

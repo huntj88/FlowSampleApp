@@ -7,7 +7,12 @@ CheckCredentials : val formData: me.jameshunt.inmotiontestapplication.login.Logi
 LoginForm ---> CheckCredentials
 LoginForm --> Back
 
-CheckCredentials --> Done
-CheckCredentials --> LoginForm
+CheckCredentials --> GetProfile
+CheckCredentials --> ShowError
+
+ShowError --> LoginForm
+
+GetProfile --> Done
+GetProfile --> ShowError
 
 @enduml

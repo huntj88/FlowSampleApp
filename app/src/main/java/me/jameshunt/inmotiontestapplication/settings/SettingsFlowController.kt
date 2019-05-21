@@ -8,7 +8,7 @@ import me.jameshunt.flow.generated.GeneratedSettingController.SettingFlowState.*
 import me.jameshunt.flow.promise.Promise
 import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.login.LoginFlowController
-import me.jameshunt.inmotiontestapplication.service.AccountManager
+import me.jameshunt.inmotiontestapplication.business.ProfileManager
 
 class SettingsFlowController(viewId: ViewId) : GeneratedSettingController(viewId) {
 
@@ -17,7 +17,7 @@ class SettingsFlowController(viewId: ViewId) : GeneratedSettingController(viewId
     private val notLoggedInFragment = proxy(NotLoggedInFragment::class.java)
 
     override fun onSettings(state: Settings): Promise<FromSettings> {
-        AccountManager.currentUser?: return Promise(NotLoggedIn)
+        ProfileManager.profile?: return Promise(NotLoggedIn)
 
         return this.flow(fragmentProxy = settingsFragment, input = Unit)
             .forResult<SettingsFragment.Output, FromSettings>(
@@ -32,14 +32,14 @@ class SettingsFlowController(viewId: ViewId) : GeneratedSettingController(viewId
     }
 
     override fun onUserSettings(state: UserSettings): Promise<FromUserSettings> {
-        val input = AccountManager.currentUser!!
+        val input = ProfileManager.profile!!
             .let { UserSettingsFragment.Data(firstName = it.firstName, lastName = it.lastName) }
 
         return this.flow(fragmentProxy = userSettingsFragment, input = input)
             .forResult<UserSettingsFragment.Data, FromUserSettings>(
                 onBack = { Promise(Settings) },
                 onComplete = {
-                    AccountManager.currentUser = AccountManager.currentUser?.copy(
+                    ProfileManager.profile = ProfileManager.profile?.copy(
                         firstName = it.firstName,
                         lastName = it.lastName
                     )
@@ -49,7 +49,7 @@ class SettingsFlowController(viewId: ViewId) : GeneratedSettingController(viewId
     }
 
     override fun onLogout(state: Logout): Promise<FromLogout> {
-        AccountManager.currentUser = null
+        ProfileManager.profile = null
         return Promise(Settings)
     }
 
