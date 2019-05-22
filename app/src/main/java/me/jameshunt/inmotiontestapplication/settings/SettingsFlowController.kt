@@ -61,9 +61,15 @@ class SettingsFlowController : GeneratedSettingController() {
     }
 
     override fun onLogin(state: Login): Promise<FromLogin> {
-        val input = SimpleGroupController.input(flow = LoginFlowController::class.java, input = Unit)
+        val input = SimpleGroupController.input(
+            flow = LoginFlowController::class.java,
+            input = Unit
+        )
 
-        return this.flowGroup(controller = SimpleGroupController::class.java.castFromInput(input), input = input).forResult<Unit, FromLogin>(
+        return this.flowGroup(
+            controller = SimpleGroupController::class.java.castFromInput(input),
+            input = input
+        ).forResult<Unit, FromLogin>(
             onBack = { Promise(Settings) },
             onComplete = { Promise(Settings) }
         )
