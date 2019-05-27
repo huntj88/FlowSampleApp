@@ -1,11 +1,11 @@
 package me.jameshunt.inmotiontestapplication.splash
 
+import com.inmotionsoftware.promisekt.Promise
+import com.inmotionsoftware.promisekt.ensure
+import com.inmotionsoftware.promisekt.map
 import me.jameshunt.flow.generated.GeneratedSplashController
 import me.jameshunt.flow.generated.GeneratedSplashController.SplashFlowState.*
-import me.jameshunt.flow.promise.Promise
-import me.jameshunt.flow.promise.PromiseDispatch
-import me.jameshunt.flow.promise.doAlso
-import me.jameshunt.flow.promise.then
+import me.jameshunt.flow.promise.DispatchExecutor
 import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.TempFlowController
 import me.jameshunt.inmotiontestapplication.colors.ColorFlowController
@@ -20,25 +20,25 @@ class SplashFlowController : GeneratedSplashController() {
 
     override fun onSplash(state: Splash): Promise<FromSplash> {
         return this.flow(fragmentProxy = splashFragment, input = Unit).forResult<Unit, FromSplash>(
-            onComplete = { Promise(Load) }
+            onComplete = { Promise.value(Load) }
         )
     }
 
     override fun onLoad(state: Load): Promise<FromLoad> {
-        return Promise(Unit)
-            .doAlso(on = PromiseDispatch.BACKGROUND) { Thread.sleep(1000) }
-            .then { ParkingLot }
+        return Promise.value(Unit)
+            .ensure(on = DispatchExecutor.global) { Thread.sleep(1000) }
+            .map { ParkingLot }
     }
 
     override fun onParkingLot(state: ParkingLot): Promise<FromParkingLot> {
         return this
             .flow(fragmentProxy = parkingLotFragment, input = Unit)
             .forResult<ParkingLotFragment.Output, FromParkingLot>(
-                onBack = { Promise(Back) },
+                onBack = { Promise.value(Back) },
                 onComplete = {
                     when (it) {
-                        ParkingLotFragment.Output.Skip -> Promise(Home)
-                        ParkingLotFragment.Output.Login -> Promise(Login)
+                        ParkingLotFragment.Output.Skip -> Promise.value(Home)
+                        ParkingLotFragment.Output.Login -> Promise.value(Login)
                     }
                 }
             )
@@ -51,14 +51,14 @@ class SplashFlowController : GeneratedSplashController() {
             pageTwo = SettingsFlowController::class.java
         )
         return this.flowGroup(ViewPagerGroupController::class.java, input).forResult<Unit, FromHome>(
-            onBack = { Promise(Back) }
+            onBack = { Promise.value(Back) }
         )
     }
 
     override fun onLogin(state: Login): Promise<FromLogin> {
         return this.flow(controller = LoginFlowController::class.java, input = Unit).forResult<Unit, FromLogin>(
-            onBack = { Promise(ParkingLot) },
-            onComplete = { Promise(Home) }
+            onBack = { Promise.value(ParkingLot) },
+            onComplete = { Promise.value(Home) }
         )
     }
 }

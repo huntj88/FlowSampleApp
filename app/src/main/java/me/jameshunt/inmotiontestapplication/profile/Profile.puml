@@ -1,8 +1,8 @@
 @startuml
 
-SaveProfile : val formData: me.jameshunt.inmotiontestapplication.business.Profile
+SaveProfile : val formData: me.jameshunt.inmotiontestapplication.profile.Profile
 
-Done : val formData: me.jameshunt.inmotiontestapplication.business.Profile
+Done : val formData: me.jameshunt.inmotiontestapplication.profile.Profile
 
 [*] -> GetProfile
 GetProfile --> ProfileRequest

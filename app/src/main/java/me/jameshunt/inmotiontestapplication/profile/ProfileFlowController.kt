@@ -1,14 +1,14 @@
 package me.jameshunt.inmotiontestapplication.profile
 
+import com.inmotionsoftware.promisekt.Promise
+import com.inmotionsoftware.promisekt.map
 import me.jameshunt.flow.generated.GeneratedProfileController
 import me.jameshunt.flow.generated.GeneratedProfileController.ProfileFlowState.*
-import me.jameshunt.flow.promise.Promise
-import me.jameshunt.flow.promise.then
 
 class ProfileFlowController : GeneratedProfileController() {
 
     override fun onGetProfile(state: GetProfile): Promise<FromGetProfile> {
-        return Promise(Unit).then<Unit, FromGetProfile> {
+        return Promise.value(Unit).map<Unit, FromGetProfile> {
             ProfileManager.profile
                 ?.let { Done(it) }
                 ?: ProfileRequest
@@ -23,11 +23,11 @@ class ProfileFlowController : GeneratedProfileController() {
             firstName = "wow",
             lastName = "last"
         )
-        return Promise(SaveProfile(networkResponse))
+        return Promise.value(SaveProfile(networkResponse))
     }
 
     override fun onSaveProfile(state: SaveProfile): Promise<FromSaveProfile> {
         ProfileManager.profile = state.formData
-        return Promise(Done(state.formData))
+        return Promise.value(Done(state.formData))
     }
 }

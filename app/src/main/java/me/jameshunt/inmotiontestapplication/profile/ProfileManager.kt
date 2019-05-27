@@ -1,6 +1,6 @@
 package me.jameshunt.inmotiontestapplication.profile
 
-import me.jameshunt.flow.promise.Promise
+import com.inmotionsoftware.promisekt.Promise
 
 object ProfileManager {
 
@@ -8,8 +8,8 @@ object ProfileManager {
 
     fun login(email: String, password: String): Promise<Boolean> {
         return when (email == "huntj88@gmail.com" && password == "qwert123") {
-            true -> Promise(true)
-            false -> Promise(false)
+            true -> Promise.value(true)
+            false -> Promise.value(false)
         }
     }
 }

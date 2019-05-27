@@ -1,8 +1,8 @@
 package me.jameshunt.inmotiontestapplication.colors
 
+import com.inmotionsoftware.promisekt.Promise
 import me.jameshunt.flow.generated.GeneratedColorController
 import me.jameshunt.flow.generated.GeneratedColorController.ColorFlowState.*
-import me.jameshunt.flow.promise.Promise
 import me.jameshunt.flow.proxy
 
 class ColorFlowController: GeneratedColorController() {
@@ -32,20 +32,21 @@ class ColorFlowController: GeneratedColorController() {
             Color(125,125,125)
         ))
 
-        return Promise(ShowColors(colors))
+        return Promise.value(ShowColors(colors))
     }
 
     override fun onShowColors(state: ShowColors): Promise<FromShowColors> {
         return this.flow(fragmentProxy = colorsListFragment, input = state.data).forResult<Color, FromShowColors>(
-            onBack = { Promise(Back) },
-            onComplete = { Promise(ColorSelected(it)) }
+            onBack = { Promise.value(Back) },
+            onComplete = { Promise.value(ColorSelected(it)) }
 //            onComplete = { Promise(GatherData) }
         )
     }
 
     override fun onColorSelected(state: ColorSelected): Promise<FromColorSelected> {
         return this.flow(fragmentProxy = selectedColorFragment, input = state.data).forResult<Unit, FromColorSelected>(
-            onBack = { Promise(GatherData) }
+            onComplete = { Promise.value(GatherData) },
+            onBack = { Promise.value(GatherData) }
         )
     }
 }

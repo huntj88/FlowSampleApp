@@ -1,2 +1,3 @@
-include ':app', ':Flow'
+include ':app', ':Flow', ':PromiseKt'
 project(':Flow').projectDir = new File('../Flow3/Flow')
+project(':PromiseKt').projectDir = new File('../ims-promise/PromiseKt')
