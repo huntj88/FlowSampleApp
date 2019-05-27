@@ -26,7 +26,7 @@ class SplashFlowController : GeneratedSplashController() {
 
     override fun onLoad(state: Load): Promise<FromLoad> {
         return Promise.value(Unit)
-            .ensure(on = DispatchExecutor.global) { Thread.sleep(1000) }
+            .ensure(on = DispatchExecutor.background) { Thread.sleep(1000) }
             .map { ParkingLot }
     }
 

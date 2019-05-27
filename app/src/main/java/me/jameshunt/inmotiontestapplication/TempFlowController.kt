@@ -29,7 +29,7 @@ class TempFlowController : GeneratedTempController() {
 
     override fun onLoad(state: Load): Promise<FromLoad> {
         return Promise.value(Unit)
-            .ensure(on = DispatchExecutor.global) { Thread.sleep(3000) }
+            .ensure(on = DispatchExecutor.background) { Thread.sleep(3000) }
             .map { Temp }
     }
 }

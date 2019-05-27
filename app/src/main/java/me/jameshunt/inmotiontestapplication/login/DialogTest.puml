@@ -1,0 +1,9 @@
+@startuml
+
+ShowDialog : val text: String
+
+[*] -> ShowDialog
+
+ShowDialog --> Done
+
+@enduml

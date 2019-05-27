@@ -1,6 +1,5 @@
 package me.jameshunt.inmotiontestapplication.login
 
-import android.util.Log
 import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.map
 import me.jameshunt.flow.generated.GeneratedLoginController
@@ -33,8 +32,12 @@ class LoginFlowController : GeneratedLoginController() {
     }
 
     override fun onShowError(state: ShowError): Promise<FromShowError> {
-        Log.d("wow error", "bad error go away")
-        return Promise.value(LoginForm)
+        return this.flow(
+            controller = DialogMessageFlowController::class.java,
+            input = "Invalid login credentials"
+        ).forResult<Unit, FromShowError>(
+            onComplete = { Promise.value(LoginForm) }
+        )
     }
 
     override fun onGetProfile(state: GetProfile): Promise<FromGetProfile> {
