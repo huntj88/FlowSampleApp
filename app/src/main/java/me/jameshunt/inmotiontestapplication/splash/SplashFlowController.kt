@@ -3,6 +3,7 @@ package me.jameshunt.inmotiontestapplication.splash
 import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.ensure
 import com.inmotionsoftware.promisekt.map
+import me.jameshunt.flow.flowGroup
 import me.jameshunt.flow.generated.GeneratedSplashController
 import me.jameshunt.flow.generated.GeneratedSplashController.SplashFlowState.*
 import me.jameshunt.flow.promise.DispatchExecutor
