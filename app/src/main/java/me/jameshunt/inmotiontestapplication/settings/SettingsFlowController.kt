@@ -24,8 +24,8 @@ class SettingsFlowController : GeneratedSettingController() {
                 onBack = { Promise.value(Back) },
                 onComplete = {
                     when (it) {
-                        SettingsFragment.Output.UserSettings -> Promise.value(UserSettings)
-                        SettingsFragment.Output.Logout -> Promise.value(Logout)
+                        SettingsFragment.Output.UserSettings -> state.toUserSettings()
+                        SettingsFragment.Output.Logout -> state.toLogout()
                     }
                 }
             )
@@ -36,14 +36,14 @@ class SettingsFlowController : GeneratedSettingController() {
             .let { UserSettingsFragment.Data(firstName = it.firstName, lastName = it.lastName) }
 
         return this.flow(fragmentProxy = userSettingsFragment, input = input)
-            .forResult<UserSettingsFragment.Data, FromUserSettings>(
-                onBack = { Promise.value(Settings) },
+            .forResult(
+                onBack = { state.toSettings() },
                 onComplete = {
                     ProfileManager.profile = ProfileManager.profile?.copy(
                         firstName = it.firstName,
                         lastName = it.lastName
                     )
-                    Promise.value(Settings)
+                    state.toSettings()
                 }
             )
     }
@@ -55,9 +55,9 @@ class SettingsFlowController : GeneratedSettingController() {
 
     override fun onNotLoggedIn(state: NotLoggedIn): Promise<FromNotLoggedIn> {
         return this.flow(fragmentProxy = notLoggedInFragment, input = Unit)
-            .forResult<Unit, FromNotLoggedIn>(
-                onBack = { Promise.value(Back) },
-                onComplete = { Promise.value(Login) }
+            .forResult(
+                onBack = { state.toBack() },
+                onComplete = { state.toLogin() }
             )
     }
 
@@ -70,9 +70,9 @@ class SettingsFlowController : GeneratedSettingController() {
         return this.flowGroup(
             controller = SimpleGroupController::class.java.castFromInput(input),
             input = input
-        ).forResult<Unit, FromLogin>(
-            onBack = { Promise.value(Settings) },
-            onComplete = { Promise.value(Settings) }
+        ).forResult(
+            onBack = { state.toSettings() },
+            onComplete = { state.toSettings() }
         )
     }
 }

@@ -1,4 +1,4 @@
-package me.jameshunt.inmotiontestapplication.login
+package me.jameshunt.inmotiontestapplication.flow.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.map
 import kotlinx.android.synthetic.main.dialog_fragment_message.*
-import me.jameshunt.flow.FlowDialogFragment
+import me.jameshunt.flow.*
 import me.jameshunt.flow.generated.GeneratedDialogTestController
 import me.jameshunt.flow.generated.GeneratedDialogTestController.DialogTestFlowState.*
-import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.R
 
 class DialogMessageFlowController : GeneratedDialogTestController() {
@@ -21,6 +20,15 @@ class DialogMessageFlowController : GeneratedDialogTestController() {
         return this.flow(simpleDialog, state.text).map {
             Done(Unit)
         }
+    }
+}
+
+class DialogMessageDelegateFlowController : GeneratedDialogTestController(), DialogFlow by DialogFlowImpl() {
+
+    override fun onShowDialog(state: ShowDialog): Promise<FromShowDialog> {
+        return this
+            .showDialog("testing cool stuff")
+            .map { Done(Unit) }
     }
 }
 

@@ -23,7 +23,7 @@ class ProfileFlowController : GeneratedProfileController() {
             firstName = "wow",
             lastName = "last"
         )
-        return Promise.value(SaveProfile(networkResponse))
+        return state.toSaveProfile(networkResponse)
     }
 
     override fun onSaveProfile(state: SaveProfile): Promise<FromSaveProfile> {

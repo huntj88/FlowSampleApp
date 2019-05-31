@@ -1,4 +1,4 @@
-package me.jameshunt.inmotiontestapplication.group.pager
+package me.jameshunt.inmotiontestapplication.flow.group.pager
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import com.inmotionsoftware.promisekt.features.race
 import me.jameshunt.flow.FragmentFlowController
 import me.jameshunt.flow.FragmentGroupFlowController
 import me.jameshunt.inmotiontestapplication.R
-import me.jameshunt.inmotiontestapplication.group.pager.ViewPagerGroupController.*
+import me.jameshunt.inmotiontestapplication.flow.group.pager.ViewPagerGroupController.*
 
 class ViewPagerGroupController : FragmentGroupFlowController<InternalInput, Unit>(R.layout.group_view_pager) {
 

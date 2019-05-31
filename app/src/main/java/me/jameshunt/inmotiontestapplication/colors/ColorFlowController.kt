@@ -32,21 +32,21 @@ class ColorFlowController: GeneratedColorController() {
             Color(125,125,125)
         ))
 
-        return Promise.value(ShowColors(colors))
+        return state.toShowColors(colors)
     }
 
     override fun onShowColors(state: ShowColors): Promise<FromShowColors> {
-        return this.flow(fragmentProxy = colorsListFragment, input = state.data).forResult<Color, FromShowColors>(
-            onBack = { Promise.value(Back) },
-            onComplete = { Promise.value(ColorSelected(it)) }
+        return this.flow(fragmentProxy = colorsListFragment, input = state.data).forResult(
+            onBack = { state.toBack() },
+            onComplete = { state.toColorSelected(it) }
 //            onComplete = { Promise(GatherData) }
         )
     }
 
     override fun onColorSelected(state: ColorSelected): Promise<FromColorSelected> {
-        return this.flow(fragmentProxy = selectedColorFragment, input = state.data).forResult<Unit, FromColorSelected>(
-            onComplete = { Promise.value(GatherData) },
-            onBack = { Promise.value(GatherData) }
+        return this.flow(fragmentProxy = selectedColorFragment, input = state.data).forResult(
+            onComplete = { state.toGatherData() },
+            onBack = { state.toGatherData() }
         )
     }
 }

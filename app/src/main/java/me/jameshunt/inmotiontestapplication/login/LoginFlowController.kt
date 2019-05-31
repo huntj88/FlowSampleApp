@@ -5,7 +5,8 @@ import com.inmotionsoftware.promisekt.map
 import me.jameshunt.flow.generated.GeneratedLoginController
 import me.jameshunt.flow.generated.GeneratedLoginController.LoginFlowState.*
 import me.jameshunt.flow.proxy
-import me.jameshunt.inmotiontestapplication.profile.Profile
+import me.jameshunt.inmotiontestapplication.flow.dialog.DialogMessageDelegateFlowController
+import me.jameshunt.inmotiontestapplication.flow.dialog.DialogMessageFlowController
 import me.jameshunt.inmotiontestapplication.profile.ProfileFlowController
 import me.jameshunt.inmotiontestapplication.profile.ProfileManager
 
@@ -13,11 +14,10 @@ class LoginFlowController : GeneratedLoginController() {
     private val loginFragmentProxy = proxy(LoginFragment::class.java)
 
     override fun onLoginForm(state: LoginForm): Promise<FromLoginForm> {
-        return this.flow(fragmentProxy = loginFragmentProxy, input = Unit)
-            .forResult<LoginFragment.LoginFormData, FromLoginForm>(
-                onBack = { Promise.value(Back) },
-                onComplete = { Promise.value(CheckCredentials(it)) }
-            )
+        return this.flow(fragmentProxy = loginFragmentProxy, input = Unit).forResult(
+            onBack = { state.toBack() },
+            onComplete = { state.toCheckCredentials(it) }
+        )
     }
 
     override fun onCheckCredentials(state: CheckCredentials): Promise<FromCheckCredentials> {
@@ -33,18 +33,18 @@ class LoginFlowController : GeneratedLoginController() {
 
     override fun onShowError(state: ShowError): Promise<FromShowError> {
         return this.flow(
-            controller = DialogMessageFlowController::class.java,
+            controller = DialogMessageDelegateFlowController::class.java,
             input = "Invalid login credentials"
-        ).forResult<Unit, FromShowError>(
-            onComplete = { Promise.value(LoginForm) }
+        ).forResult(
+            onComplete = { state.toLoginForm() }
         )
     }
 
     override fun onGetProfile(state: GetProfile): Promise<FromGetProfile> {
         return this.flow(controller = ProfileFlowController::class.java, input = Unit)
-            .forResult<Profile, FromGetProfile>(
-                onComplete = { Promise.value(Done(Unit)) },
-                onCatch = { Promise.value(ShowError) }
+            .forResult(
+                onComplete = { state.toDone() },
+                onCatch = { state.toShowError() }
             )
     }
 }
