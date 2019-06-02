@@ -5,7 +5,7 @@ import me.jameshunt.flow.generated.GeneratedColorController
 import me.jameshunt.flow.generated.GeneratedColorController.ColorFlowState.*
 import me.jameshunt.flow.proxy
 
-class ColorFlowController: GeneratedColorController() {
+open class ColorFlowController: GeneratedColorController() {
 
     private val colorsListFragment = proxy(ColorsListFragment::class.java)
     private val selectedColorFragment = proxy(SelectedColorFragment::class.java)
