@@ -2,7 +2,7 @@ package me.jameshunt.inmotiontestapplication.colors
 
 import com.inmotionsoftware.promisekt.*
 import me.jameshunt.flow.generated.GeneratedColorController.ColorFlowState.*
-import me.jameshunt.flowtest.enableTesting
+import me.jameshunt.flowtest.flowTest
 import me.jameshunt.inmotiontestapplication.AsyncTests
 import org.junit.Assert.*
 import org.junit.Test
@@ -10,7 +10,7 @@ import org.junit.Test
 class ColorFlowControllerTest : ColorFlowController(), AsyncTests {
 
     init {
-        this.enableTesting {}
+        flowTest {}
     }
 
     @Test
@@ -23,14 +23,6 @@ class ColorFlowControllerTest : ColorFlowController(), AsyncTests {
 
     @Test
     fun onShowColorsFragmentMockTest() {
-        this.enableTesting {
-
-            // mock fragment and have it resolve with the value returned in this closure
-            mockFragment(ColorsListFragment::class.java) { fragmentInput ->
-                // mocked fragment output
-                fragmentInput.colors.last()
-            }
-        }
 
         val data = Colors(
             listOf(
@@ -39,6 +31,13 @@ class ColorFlowControllerTest : ColorFlowController(), AsyncTests {
             )
         )
 
+        flowTest {
+            mockFragment(ColorsListFragment::class.java) { fragmentInput ->
+                // mocked fragment output
+                fragmentInput.colors.last()
+            }
+        }
+
         this.onShowColors(state = ShowColors(data))
             .get { println(it) }
             .done {
@@ -46,5 +45,22 @@ class ColorFlowControllerTest : ColorFlowController(), AsyncTests {
                 assertEquals(Color(0, 0, 5), color)
             }
             .throwCaughtErrors()
+    }
+
+    @Test
+    fun throwExceptionFragmentMockTest() {
+
+        flowTest {
+            mockFragment(ColorsListFragment::class.java) { fragmentInput ->
+                // mocked fragment output
+                throw IllegalStateException()
+            }
+        }
+
+        this.onShowColors(state = ShowColors(Colors(listOf())))
+            .done { fail() }
+            .catch {
+                assertTrue("caught exception",true)
+            }
     }
 }

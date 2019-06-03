@@ -1,7 +1,6 @@
 package me.jameshunt.inmotiontestapplication
 
-import com.inmotionsoftware.promisekt.Result
-import com.inmotionsoftware.promisekt.Thenable
+import com.inmotionsoftware.promisekt.*
 import org.junit.Assert.fail
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -19,9 +18,7 @@ interface AsyncTests {
         }
     }
 
-    fun <T> Thenable<T>.throwCaughtErrors() {
-        (this.result as? Result.rejected)?.let {
-            throw it.error
-        }
+    fun <T> Promise<T>.throwCaughtErrors() {
+        this.catch { throw it }
     }
 }
