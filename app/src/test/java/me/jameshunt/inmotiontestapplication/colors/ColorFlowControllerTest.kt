@@ -2,7 +2,7 @@ package me.jameshunt.inmotiontestapplication.colors
 
 import com.inmotionsoftware.promisekt.*
 import me.jameshunt.flow.generated.GeneratedColorController.ColorFlowState.*
-import me.jameshunt.flow.testing.enableTesting
+import me.jameshunt.flowtest.enableTesting
 import me.jameshunt.inmotiontestapplication.AsyncTests
 import org.junit.Assert.*
 import org.junit.Test
@@ -34,19 +34,14 @@ class ColorFlowControllerTest : ColorFlowController(), AsyncTests {
 
         val data = Colors(
             listOf(
-                Color(0, 0, 0),
-                Color(0, 0, 1),
-                Color(0, 0, 2),
-                Color(0, 0, 3),
                 Color(0, 0, 4),
                 Color(0, 0, 5)
             )
         )
 
         this.onShowColors(state = ShowColors(data))
-            .map {
-                println(it)
-
+            .get { println(it) }
+            .done {
                 val color = (it as ColorSelected).data
                 assertEquals(Color(0, 0, 5), color)
             }
