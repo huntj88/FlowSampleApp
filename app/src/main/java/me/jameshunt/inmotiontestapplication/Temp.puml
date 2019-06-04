@@ -3,7 +3,8 @@
 [*] -> Temp
 Temp --> Splash
 Splash -> Load
-Load --> Temp
+Load -> Activity
+Activity --> Temp
 
 Temp -> Back
 
