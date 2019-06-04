@@ -10,9 +10,11 @@ import me.jameshunt.flow.generated.GeneratedTempController
 import me.jameshunt.flow.generated.GeneratedTempController.TempFlowState.*
 import me.jameshunt.flow.promise.DispatchExecutor
 import me.jameshunt.flow.proxy
+import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlow
+import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowImpl
 import me.jameshunt.inmotiontestapplication.splash.SplashFragment
 
-class TempFlowController : GeneratedTempController() {
+class TempFlowController : GeneratedTempController(), PhotoPickerFlow by PhotoPickerFlowImpl() {
 
     private val testFragmentProxy = proxy(TestFragment::class.java)
     private val splashFragmentProxy = proxy(SplashFragment::class.java)
@@ -37,21 +39,7 @@ class TempFlowController : GeneratedTempController() {
     }
 
     override fun onActivity(state: Activity): Promise<FromActivity> {
-
-        val getIntent = Intent(Intent.ACTION_GET_CONTENT)
-        getIntent.type = "image/*"
-
-        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickIntent.type = "image/*"
-
-        val chooserIntent = Intent.createChooser(getIntent, "Select Image")
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
-
-        val bitmap = this.flow<Bitmap>(chooserIntent) { context, data ->
-            MediaStore.Images.Media.getBitmap(context.contentResolver, data!!.data)
-        }
-
-        return bitmap.forResult(
+        return choosePhotoFromPicker().forResult(
             onComplete = {
                 println("woohoooooo bitmap: ${it.allocationByteCount}")
                 state.toTemp()
