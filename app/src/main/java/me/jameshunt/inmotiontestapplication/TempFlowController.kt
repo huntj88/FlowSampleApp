@@ -1,8 +1,5 @@
 package me.jameshunt.inmotiontestapplication
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.provider.MediaStore
 import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.ensure
 import com.inmotionsoftware.promisekt.thenMap
@@ -10,11 +7,10 @@ import me.jameshunt.flow.generated.GeneratedTempController
 import me.jameshunt.flow.generated.GeneratedTempController.TempFlowState.*
 import me.jameshunt.flow.promise.DispatchExecutor
 import me.jameshunt.flow.proxy
-import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlow
-import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowImpl
+import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowController
 import me.jameshunt.inmotiontestapplication.splash.SplashFragment
 
-class TempFlowController : GeneratedTempController(), PhotoPickerFlow by PhotoPickerFlowImpl() {
+open class TempFlowController : GeneratedTempController() {
 
     private val testFragmentProxy = proxy(TestFragment::class.java)
     private val splashFragmentProxy = proxy(SplashFragment::class.java)
@@ -39,7 +35,7 @@ class TempFlowController : GeneratedTempController(), PhotoPickerFlow by PhotoPi
     }
 
     override fun onActivity(state: Activity): Promise<FromActivity> {
-        return choosePhotoFromPicker().forResult(
+        return this.flow(PhotoPickerFlowController::class.java, Unit).forResult(
             onComplete = {
                 println("woohoooooo bitmap: ${it.allocationByteCount}")
                 state.toTemp()

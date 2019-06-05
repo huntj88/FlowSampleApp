@@ -4,15 +4,12 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
 import com.inmotionsoftware.promisekt.Promise
+import me.jameshunt.flow.ActivityAdapterFlowController
 import me.jameshunt.flow.FlowResult
-import me.jameshunt.flow.FragmentFlowController
 
-interface PhotoPickerFlow {
-    fun FragmentFlowController<*, *>.choosePhotoFromPicker(): Promise<FlowResult<Bitmap>>
-}
+class PhotoPickerFlowController: ActivityAdapterFlowController<Unit, Bitmap>() {
 
-class PhotoPickerFlowImpl: PhotoPickerFlow {
-    override fun FragmentFlowController<*, *>.choosePhotoFromPicker(): Promise<FlowResult<Bitmap>> {
+    override fun handleInputOutputIntents(flowInput: Unit): Promise<FlowResult<Bitmap>> {
         val getIntent = Intent(Intent.ACTION_GET_CONTENT)
         getIntent.type = "image/*"
 
@@ -22,8 +19,8 @@ class PhotoPickerFlowImpl: PhotoPickerFlow {
         val chooserIntent = Intent.createChooser(getIntent, "Select Image")
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
 
-        return this.flow(chooserIntent) { context, data ->
-            MediaStore.Images.Media.getBitmap(context.contentResolver, data.data)
+        return this.flow(chooserIntent) { context, result ->
+            MediaStore.Images.Media.getBitmap(context.contentResolver, result.data)
         }
     }
 }
