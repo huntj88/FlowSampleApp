@@ -8,6 +8,7 @@ import me.jameshunt.flow.generated.GeneratedTempController.TempFlowState.*
 import me.jameshunt.flow.promise.DispatchExecutor
 import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowController
+import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowController.*
 import me.jameshunt.inmotiontestapplication.splash.SplashFragment
 
 open class TempFlowController : GeneratedTempController() {
@@ -35,9 +36,12 @@ open class TempFlowController : GeneratedTempController() {
     }
 
     override fun onActivity(state: Activity): Promise<FromActivity> {
-        return this.flow(PhotoPickerFlowController::class.java, Unit).forResult(
+        return this.flow(
+            controller = PhotoPickerFlowController::class.java,
+            input = PhotoType.Uri
+        ).forResult(
             onComplete = {
-                println("woohoooooo bitmap: ${it.allocationByteCount}")
+                println("woohoooooo imageUri: $it")
                 state.toTemp()
             },
             onBack = {
