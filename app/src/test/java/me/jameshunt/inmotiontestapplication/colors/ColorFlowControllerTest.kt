@@ -53,14 +53,14 @@ class ColorFlowControllerTest : ColorFlowController(), AsyncTests {
         flowTest {
             mockFragment(ColorsListFragment::class.java) { fragmentInput ->
                 // mocked fragment output
-                throw IllegalStateException()
+                throw IllegalStateException("test exception")
             }
         }
 
         this.onShowColors(state = ShowColors(Colors(listOf())))
             .done { fail() }
             .catch {
-                assertTrue("caught exception",true)
+                assertTrue("caught exception", true)
             }
     }
 }

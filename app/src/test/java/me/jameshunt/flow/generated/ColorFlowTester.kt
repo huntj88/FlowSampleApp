@@ -2,8 +2,7 @@ package me.jameshunt.flow.generated
 
 import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.map
-import me.jameshunt.flow.FlowController
-import me.jameshunt.inmotiontestapplication.colors.Color
+import me.jameshunt.flowcore.FlowController
 import me.jameshunt.inmotiontestapplication.colors.ColorFlowController
 import me.jameshunt.inmotiontestapplication.colors.Colors
 import org.junit.Test

@@ -1,15 +1,26 @@
 package me.jameshunt.inmotiontestapplication.profile
 
 import com.inmotionsoftware.promisekt.Promise
-import com.inmotionsoftware.promisekt.ensure
-import me.jameshunt.flow.FlowController
+import com.inmotionsoftware.promisekt.map
 import me.jameshunt.flow.promise.DispatchExecutor
+import me.jameshunt.flowcore.FlowController
 
-class ProfileBusinessFlowController: FlowController<Unit, Unit>() {
+class ProfileBusinessFlowController : FlowController<Unit, Profile>() {
     override fun onStart(state: InitialState<Unit>) {
         println("wow business logic")
-        Promise.value(Unit)
-            .ensure(on = DispatchExecutor.background) { Thread.sleep(5000) }
-            .ensure { this.onDone(Unit) }
+        Promise.value(Unit).map(on = DispatchExecutor.background) {
+            ProfileManager.profile
+                ?.let { this.onDone(it) }
+                ?: let {
+                    Thread.sleep(5000)
+                    val networkResponse = Profile(
+                        email = "a@a.com",
+                        firstName = "wow",
+                        lastName = "last"
+                    )
+                    ProfileManager.profile = networkResponse
+                    this.onDone(networkResponse)
+                }
+        }
     }
 }

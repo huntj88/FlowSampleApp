@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     implementation project(':Flow')
+    implementation project(':FlowCore')
     testImplementation project(':FlowTest')
     implementation project(':PromiseKt')
 
