@@ -9,7 +9,7 @@ class ProfileBusinessFlowController: FlowController<Unit, Unit>() {
     override fun onStart(state: InitialState<Unit>) {
         println("wow business logic")
         Promise.value(Unit)
-            .ensure(on = DispatchExecutor.background) { Thread.sleep(3000) }
+            .ensure(on = DispatchExecutor.background) { Thread.sleep(5000) }
             .ensure { this.onDone(Unit) }
     }
 }
