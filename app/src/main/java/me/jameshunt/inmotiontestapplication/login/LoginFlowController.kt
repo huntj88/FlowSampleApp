@@ -2,12 +2,12 @@ package me.jameshunt.inmotiontestapplication.login
 
 import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.map
+import com.inmotionsoftware.promisekt.thenMap
 import me.jameshunt.flow.generated.GeneratedLoginController
 import me.jameshunt.flow.generated.GeneratedLoginController.LoginFlowState.*
 import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.flow.dialog.DialogMessageDelegateFlowController
-import me.jameshunt.inmotiontestapplication.flow.dialog.DialogMessageFlowController
-import me.jameshunt.inmotiontestapplication.profile.ProfileFlowController
+import me.jameshunt.inmotiontestapplication.profile.ProfileBusinessFlowController
 import me.jameshunt.inmotiontestapplication.profile.ProfileManager
 
 class LoginFlowController : GeneratedLoginController() {
@@ -41,10 +41,9 @@ class LoginFlowController : GeneratedLoginController() {
     }
 
     override fun onGetProfile(state: GetProfile): Promise<FromGetProfile> {
-        return this.flow(controller = ProfileFlowController::class.java, input = Unit)
-            .forResult(
-                onComplete = { state.toDone() },
-                onCatch = { state.toShowError() }
-            )
+        return this.flowNoUI(
+            controller = ProfileBusinessFlowController::class.java,
+            input = Unit
+        ).thenMap { state.toDone() }
     }
 }
