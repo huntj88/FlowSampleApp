@@ -36,6 +36,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0'
 
+    implementation project(':Business')
+
     implementation project(':Flow')
     implementation project(':FlowCore')
     testImplementation project(':FlowTest')

@@ -7,8 +7,8 @@ import me.jameshunt.flow.generated.GeneratedLoginController
 import me.jameshunt.flow.generated.GeneratedLoginController.LoginFlowState.*
 import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.flow.dialog.DialogMessageDelegateFlowController
-import me.jameshunt.inmotiontestapplication.profile.ProfileBusinessFlowController
-import me.jameshunt.inmotiontestapplication.profile.ProfileManager
+import me.jameshunt.business.ProfileBusinessFlowController
+import me.jameshunt.business.ProfileManager
 
 class LoginFlowController : GeneratedLoginController() {
     private val loginFragmentProxy = proxy(LoginFragment::class.java)
@@ -41,7 +41,7 @@ class LoginFlowController : GeneratedLoginController() {
     }
 
     override fun onGetProfile(state: GetProfile): Promise<FromGetProfile> {
-        return this.flowNoUI(
+        return this.flowBusiness(
             controller = ProfileBusinessFlowController::class.java,
             input = Unit
         ).thenMap { state.toDone() }

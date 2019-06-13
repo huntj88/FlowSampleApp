@@ -1,4 +1,4 @@
-package me.jameshunt.inmotiontestapplication.profile
+package me.jameshunt.business
 
 import com.inmotionsoftware.promisekt.Promise
 

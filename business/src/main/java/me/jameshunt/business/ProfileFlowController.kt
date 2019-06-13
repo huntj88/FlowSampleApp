@@ -1,14 +1,13 @@
-package me.jameshunt.inmotiontestapplication.profile
+package me.jameshunt.business
 
 import com.inmotionsoftware.promisekt.Promise
-import com.inmotionsoftware.promisekt.map
-import me.jameshunt.flow.promise.DispatchExecutor
-import me.jameshunt.flowcore.FlowController
+import me.jameshunt.flowcore.BusinessFlowController
 
-class ProfileBusinessFlowController : FlowController<Unit, Profile>() {
+class ProfileBusinessFlowController : BusinessFlowController<Unit, Profile>() {
     override fun onStart(state: InitialState<Unit>) {
         println("wow business logic")
-        Promise.value(Unit).map(on = DispatchExecutor.background) {
+
+        Promise.value(Unit).map {
             ProfileManager.profile
                 ?.let { this.onDone(it) }
                 ?: let {

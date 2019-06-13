@@ -1,4 +1,4 @@
-include ':app', ':FlowCore', ':Flow', ':PromiseKt', ':FlowTest'
+include ':app', ':FlowCore', ':Flow', ':PromiseKt', ':FlowTest', ':Business'
 project(':Flow').projectDir = new File('../FlowV2/Flow')
 project(':FlowCore').projectDir = new File('../FlowV2/FlowCore')
 project(':FlowTest').projectDir = new File('../FlowV2/FlowTest')

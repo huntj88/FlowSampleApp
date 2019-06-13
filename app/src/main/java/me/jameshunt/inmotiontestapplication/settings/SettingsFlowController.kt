@@ -7,7 +7,7 @@ import me.jameshunt.flow.generated.GeneratedSettingController
 import me.jameshunt.flow.generated.GeneratedSettingController.SettingFlowState.*
 import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.login.LoginFlowController
-import me.jameshunt.inmotiontestapplication.profile.ProfileManager
+import me.jameshunt.business.ProfileManager
 
 class SettingsFlowController : GeneratedSettingController() {
 
