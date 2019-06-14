@@ -39,8 +39,8 @@ dependencies {
     implementation project(':Business')
 
     implementation project(':Flow')
-    implementation project(':FlowCore')
-    testImplementation project(':FlowTest')
+    implementation project(':FlowAndroid')
+    testImplementation project(':FlowAndroidTest')
     implementation project(':PromiseKt')
 
     testImplementation 'junit:junit:4.12'

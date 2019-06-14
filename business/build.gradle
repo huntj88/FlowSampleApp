@@ -5,7 +5,7 @@ apply plugin: 'flow-generate'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':FlowCore')
+    implementation project(':Flow')
     implementation project(':PromiseKt')
 }
 
