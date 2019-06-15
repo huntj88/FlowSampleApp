@@ -2,7 +2,6 @@ package me.jameshunt.inmotiontestapplication.login
 
 import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.map
-import com.inmotionsoftware.promisekt.thenMap
 import me.jameshunt.flow.generated.GeneratedLoginController
 import me.jameshunt.flow.generated.GeneratedLoginController.LoginFlowState.*
 import me.jameshunt.flow.proxy
@@ -44,6 +43,12 @@ class LoginFlowController : GeneratedLoginController() {
         return this.flowBusiness(
             controller = ProfileBusinessFlowController::class.java,
             input = Unit
-        ).thenMap { state.toDone() }
+        ).forResult(
+            onBack = {
+                ProfileManager.profile = null
+                state.toBack()
+            },
+            onComplete = { state.toDone() }
+        )
     }
 }

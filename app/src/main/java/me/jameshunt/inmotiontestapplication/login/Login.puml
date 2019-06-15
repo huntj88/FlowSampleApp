@@ -13,6 +13,6 @@ CheckCredentials --> ShowError
 ShowError --> LoginForm
 
 GetProfile --> Done
-GetProfile --> ShowError
+GetProfile --> Back
 
 @enduml
