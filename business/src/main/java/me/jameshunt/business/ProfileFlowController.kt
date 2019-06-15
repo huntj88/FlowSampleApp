@@ -4,7 +4,7 @@ import com.inmotionsoftware.promisekt.Promise
 import me.jameshunt.flow.generated.GeneratedProfileController
 import me.jameshunt.flow.generated.GeneratedProfileController.ProfileFlowState.*
 
-class ProfileBusinessFlowController: GeneratedProfileController() {
+open class ProfileBusinessFlowController: GeneratedProfileController() {
     override fun onGetProfile(state: GetProfile): Promise<FromGetProfile> {
         println("wow business logic")
 

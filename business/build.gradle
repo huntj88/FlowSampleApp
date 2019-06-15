@@ -6,7 +6,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':Flow')
+    implementation project(':FlowTest')
     implementation project(':PromiseKt')
+
+    testImplementation 'junit:junit:4.12'
 }
 
 compileKotlin {
