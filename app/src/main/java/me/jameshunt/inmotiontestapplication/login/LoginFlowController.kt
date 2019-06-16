@@ -2,12 +2,12 @@ package me.jameshunt.inmotiontestapplication.login
 
 import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.map
+import me.jameshunt.business.ProfileBusinessFlowController
+import me.jameshunt.business.ProfileManager
 import me.jameshunt.flow.generated.GeneratedLoginController
 import me.jameshunt.flow.generated.GeneratedLoginController.LoginFlowState.*
 import me.jameshunt.flow.proxy
-import me.jameshunt.inmotiontestapplication.flow.dialog.DialogMessageDelegateFlowController
-import me.jameshunt.business.ProfileBusinessFlowController
-import me.jameshunt.business.ProfileManager
+import me.jameshunt.inmotiontestapplication.flow.dialog.DialogMessageFlowController
 
 class LoginFlowController : GeneratedLoginController() {
     private val loginFragmentProxy = proxy(LoginFragment::class.java)
@@ -32,7 +32,7 @@ class LoginFlowController : GeneratedLoginController() {
 
     override fun onShowError(state: ShowError): Promise<FromShowError> {
         return this.flow(
-            controller = DialogMessageDelegateFlowController::class.java,
+            controller = DialogMessageFlowController::class.java,
             input = "Invalid login credentials"
         ).forResult(
             onComplete = { state.toLoginForm() }

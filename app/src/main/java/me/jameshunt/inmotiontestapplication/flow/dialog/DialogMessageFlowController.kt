@@ -5,30 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.inmotionsoftware.promisekt.Promise
-import com.inmotionsoftware.promisekt.map
+import com.inmotionsoftware.promisekt.thenMap
 import kotlinx.android.synthetic.main.dialog_fragment_message.*
-import me.jameshunt.flow.*
+import me.jameshunt.flow.FlowDialogFragment
 import me.jameshunt.flow.generated.GeneratedDialogTestController
-import me.jameshunt.flow.generated.GeneratedDialogTestController.DialogTestFlowState.*
+import me.jameshunt.flow.generated.GeneratedDialogTestController.DialogTestFlowState.FromShowDialog
+import me.jameshunt.flow.generated.GeneratedDialogTestController.DialogTestFlowState.ShowDialog
+import me.jameshunt.flow.proxy
 import me.jameshunt.inmotiontestapplication.R
 
 class DialogMessageFlowController : GeneratedDialogTestController() {
 
-    private val simpleDialog = proxy(DialogMessage::class.java)
-
     override fun onShowDialog(state: ShowDialog): Promise<FromShowDialog> {
-        return this.flow(simpleDialog, state.text).map {
-            Done(Unit)
-        }
-    }
-}
-
-class DialogMessageDelegateFlowController : GeneratedDialogTestController(), DialogFlow by DialogFlowImpl() {
-
-    override fun onShowDialog(state: ShowDialog): Promise<FromShowDialog> {
-        return this
-            .showDialog("testing cool stuff")
-            .map { Done(Unit) }
+        return this.flow(
+            fragmentProxy = proxy(DialogMessage::class.java),
+            input = state.text
+        ).thenMap { state.toDone() }
     }
 }
 
