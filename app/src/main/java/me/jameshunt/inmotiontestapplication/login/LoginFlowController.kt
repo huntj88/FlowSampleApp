@@ -1,7 +1,6 @@
 package me.jameshunt.inmotiontestapplication.login
 
-import com.inmotionsoftware.promisekt.Promise
-import com.inmotionsoftware.promisekt.map
+import com.inmotionsoftware.promisekt.*
 import me.jameshunt.business.ProfileBusinessFlowController
 import me.jameshunt.business.ProfileManager
 import me.jameshunt.flow.generated.GeneratedLoginController
@@ -22,10 +21,10 @@ class LoginFlowController : GeneratedLoginController() {
     override fun onCheckCredentials(state: CheckCredentials): Promise<FromCheckCredentials> {
         return ProfileManager
             .login(email = state.formData.email, password = state.formData.password)
-            .map<Boolean, FromCheckCredentials> {
+            .thenMap {
                 when (it) {
-                    true -> GetProfile
-                    false -> ShowError
+                    true -> state.toGetProfile()
+                    false -> state.toShowError()
                 }
             }
     }

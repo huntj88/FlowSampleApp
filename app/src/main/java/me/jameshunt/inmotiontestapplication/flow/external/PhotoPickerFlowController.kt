@@ -1,13 +1,15 @@
 package me.jameshunt.inmotiontestapplication.flow.external
 
+import android.content.Context
 import android.content.Intent
 import android.provider.MediaStore
 import com.inmotionsoftware.promisekt.Promise
 import me.jameshunt.flow.ActivityAdapterFlowController
 import me.jameshunt.flow.FlowResult
-import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowController.*
+import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowController.Output
+import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowController.PhotoType
 
-class PhotoPickerFlowController: ActivityAdapterFlowController<PhotoType, Output>() {
+class PhotoPickerFlowController : ActivityAdapterFlowController<PhotoType, Output>() {
 
     enum class PhotoType {
         Bitmap,
@@ -15,11 +17,11 @@ class PhotoPickerFlowController: ActivityAdapterFlowController<PhotoType, Output
     }
 
     sealed class Output {
-        data class Bitmap(val value: android.graphics.Bitmap): Output()
-        data class Uri(val value: android.net.Uri): Output()
+        data class Bitmap(val value: android.graphics.Bitmap) : Output()
+        data class Uri(val value: android.net.Uri) : Output()
     }
 
-    override fun handleInputOutputIntents(flowInput: PhotoType): Promise<FlowResult<Output>> {
+    override fun handleIOActivityIntents(context: () -> Context, flowInput: PhotoType): Promise<FlowResult<Output>> {
         val getIntent = Intent(Intent.ACTION_GET_CONTENT)
         getIntent.type = "image/*"
 
@@ -29,10 +31,10 @@ class PhotoPickerFlowController: ActivityAdapterFlowController<PhotoType, Output
         val chooserIntent = Intent.createChooser(getIntent, "Select Image")
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
 
-        return this.flow(chooserIntent) { context, result: Intent ->
-            when(flowInput) {
+        return this.flow(chooserIntent) { result: Intent ->
+            when (flowInput) {
                 PhotoType.Bitmap -> {
-                    val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, result.data)
+                    val bitmap = MediaStore.Images.Media.getBitmap(context().contentResolver, result.data)
                     Output.Bitmap(bitmap)
                 }
                 PhotoType.Uri -> Output.Uri(result.data!!)
