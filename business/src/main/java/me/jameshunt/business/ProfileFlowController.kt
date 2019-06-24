@@ -1,11 +1,11 @@
 package me.jameshunt.business
 
-import com.inmotionsoftware.promisekt.Promise
+import kotlinx.coroutines.delay
 import me.jameshunt.flow.generated.GeneratedProfileController
 import me.jameshunt.flow.generated.GeneratedProfileController.ProfileFlowState.*
 
 open class ProfileBusinessFlowController: GeneratedProfileController() {
-    override fun onGetProfile(state: GetProfile): Promise<FromGetProfile> {
+    override suspend fun onGetProfile(state: GetProfile): FromGetProfile {
         println("wow business logic")
 
         return ProfileManager
@@ -13,9 +13,9 @@ open class ProfileBusinessFlowController: GeneratedProfileController() {
             ?: state.toProfileRequest()
     }
 
-    override fun onProfileRequest(state: ProfileRequest): Promise<FromProfileRequest> {
+    override suspend fun onProfileRequest(state: ProfileRequest): FromProfileRequest {
         // network request
-        Thread.sleep(5000)
+        delay(5000)
         val networkResponse = Profile(
             email = "a@a.com",
             firstName = "wow",
@@ -24,7 +24,7 @@ open class ProfileBusinessFlowController: GeneratedProfileController() {
         return state.toSaveProfile(networkResponse)
     }
 
-    override fun onSaveProfile(state: SaveProfile): Promise<FromSaveProfile> {
+    override suspend fun onSaveProfile(state: SaveProfile): FromSaveProfile {
         ProfileManager.profile = state.formData
         return state.toDone(state.formData)
     }

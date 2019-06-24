@@ -15,52 +15,49 @@ class SettingsFlowController : GeneratedSettingController() {
     private val userSettingsFragment = proxy(UserSettingsFragment::class.java)
     private val notLoggedInFragment = proxy(NotLoggedInFragment::class.java)
 
-    override fun onSettings(state: Settings): Promise<FromSettings> {
-        ProfileManager.profile?: return Promise.value(NotLoggedIn)
+    override suspend fun onSettings(state: Settings): FromSettings {
+        ProfileManager.profile ?: return state.toNotLoggedIn()
 
-        return this.flow(fragmentProxy = settingsFragment, input = Unit)
-            .forResult<SettingsFragment.Output, FromSettings>(
-                onBack = { Promise.value(Back) },
-                onComplete = {
-                    when (it) {
-                        SettingsFragment.Output.UserSettings -> state.toUserSettings()
-                        SettingsFragment.Output.Logout -> state.toLogout()
-                    }
+        return this.flow(fragmentProxy = settingsFragment, input = Unit).forResult(
+            onBack = { state.toBack() },
+            onComplete = {
+                when (it) {
+                    SettingsFragment.Output.UserSettings -> state.toUserSettings()
+                    SettingsFragment.Output.Logout -> state.toLogout()
                 }
-            )
+            }
+        )
     }
 
-    override fun onUserSettings(state: UserSettings): Promise<FromUserSettings> {
+    override suspend fun onUserSettings(state: UserSettings): FromUserSettings {
         val input = ProfileManager.profile!!
             .let { UserSettingsFragment.Data(firstName = it.firstName, lastName = it.lastName) }
 
-        return this.flow(fragmentProxy = userSettingsFragment, input = input)
-            .forResult(
-                onBack = { state.toSettings() },
-                onComplete = {
-                    ProfileManager.profile = ProfileManager.profile?.copy(
-                        firstName = it.firstName,
-                        lastName = it.lastName
-                    )
-                    state.toSettings()
-                }
-            )
+        return this.flow(fragmentProxy = userSettingsFragment, input = input).forResult(
+            onBack = { state.toSettings() },
+            onComplete = {
+                ProfileManager.profile = ProfileManager.profile?.copy(
+                    firstName = it.firstName,
+                    lastName = it.lastName
+                )
+                state.toSettings()
+            }
+        )
     }
 
-    override fun onLogout(state: Logout): Promise<FromLogout> {
+    override suspend fun onLogout(state: Logout): FromLogout {
         ProfileManager.profile = null
-        return Promise.value(Settings)
+        return state.toSettings()
     }
 
-    override fun onNotLoggedIn(state: NotLoggedIn): Promise<FromNotLoggedIn> {
-        return this.flow(fragmentProxy = notLoggedInFragment, input = Unit)
-            .forResult(
-                onBack = { state.toBack() },
-                onComplete = { state.toLogin() }
-            )
+    override suspend fun onNotLoggedIn(state: NotLoggedIn): FromNotLoggedIn {
+        return this.flow(fragmentProxy = notLoggedInFragment, input = Unit).forResult(
+            onBack = { state.toBack() },
+            onComplete = { state.toLogin() }
+        )
     }
 
-    override fun onLogin(state: Login): Promise<FromLogin> {
+    override suspend fun onLogin(state: Login): FromLogin {
         val input = SimpleGroupController.input(
             flow = LoginFlowController::class.java,
             input = Unit

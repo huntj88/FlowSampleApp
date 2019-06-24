@@ -16,11 +16,11 @@ import me.jameshunt.inmotiontestapplication.R
 
 class DialogMessageFlowController : GeneratedDialogTestController() {
 
-    override fun onShowDialog(state: ShowDialog): Promise<FromShowDialog> {
+    override suspend fun onShowDialog(state: ShowDialog): FromShowDialog {
         return this.flow(
             fragmentProxy = proxy(DialogMessage::class.java),
             input = state.text
-        ).thenMap { state.toDone() }
+        ).let { state.toDone() }
     }
 }
 

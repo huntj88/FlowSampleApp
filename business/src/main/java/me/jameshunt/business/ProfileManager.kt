@@ -1,17 +1,14 @@
 package me.jameshunt.business
 
-import com.inmotionsoftware.promisekt.Promise
+import kotlinx.coroutines.delay
 
 object ProfileManager {
 
     var profile: Profile? = null
 
-    fun login(email: String, password: String): Promise<Boolean> {
-        return when (email == "" && password == "") {
-//        return when (email == "huntj88@gmail.com" && password == "qwert123") {
-            true -> Promise.value(true)
-            false -> Promise.value(false)
-        }
+    suspend fun login(email: String, password: String): Boolean {
+        delay(1000)
+        return (email == "" && password == "")
     }
 }
 

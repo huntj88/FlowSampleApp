@@ -95,14 +95,16 @@ class ViewPagerGroupController : FragmentGroupFlowController<InternalInput, Unit
         viewPager.currentItem = childIndexToDelegateBack()
     }
 
-    override fun startFlowInGroup(groupInput: InternalInput): Promise<State> {
+    override suspend fun startFlowInGroup(groupInput: InternalInput): State {
         val pageZero = this.flow(controller = groupInput.pageZero, viewId = R.id.groupPagerZero, input = Unit)
         val pageOne = this.flow(controller = groupInput.pageOne, viewId = R.id.groupPagerOne, input = Unit)
         val pageTwo = this.flow(controller = groupInput.pageTwo, viewId = R.id.groupPagerTwo, input = Unit)
 
-        return race(pageZero, pageOne, pageTwo).forResult<Unit, State>(
-            onBack = { Promise.value(Back) },
-            onComplete = { Promise.value(Done(it)) }
-        )
+//        return race(pageZero, pageOne, pageTwo).forResult<Unit, State>(
+//            onBack = { Promise.value(Back) },
+//            onComplete = { Promise.value(Done(it)) }
+//        )
+
+        TODO()
     }
 }

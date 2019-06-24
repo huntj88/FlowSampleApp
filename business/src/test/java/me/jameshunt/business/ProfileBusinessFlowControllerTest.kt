@@ -1,7 +1,7 @@
 package me.jameshunt.business
 
-import me.jameshunt.flow.generated.GeneratedProfileController.ProfileFlowState.ProfileRequest
-import me.jameshunt.flow.generated.GeneratedProfileController.ProfileFlowState.SaveProfile
+import kotlinx.coroutines.runBlocking
+import me.jameshunt.flow.generated.GeneratedProfileController.ProfileFlowState.*
 import me.jameshunt.flowtest.flowTest
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
@@ -15,8 +15,14 @@ class ProfileBusinessFlowControllerTest : ProfileBusinessFlowController() {
 
     @Test
     fun onProfileRequestTest() {
-        this.onProfileRequest(ProfileRequest)
-            .map { assertTrue((it as SaveProfile).formData.firstName == "wow") }
-            .catch { fail() }
+        runBlocking {
+            try {
+                onProfileRequest(ProfileRequest).let {
+                    assertTrue((it as SaveProfile).formData.firstName == "wow")
+                }
+            } catch (t: Throwable) {
+                fail()
+            }
+        }
     }
 }
