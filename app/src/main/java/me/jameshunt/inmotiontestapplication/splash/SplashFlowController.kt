@@ -54,7 +54,8 @@ class SplashFlowController : GeneratedSplashController() {
     override suspend fun onLogin(state: Login): FromLogin {
         return this.flow(controller = LoginFlowController::class.java, input = Unit).forResult(
             onBack = { state.toParkingLot() },
-            onComplete = { state.toHome() }
+            onComplete = { state.toHome() },
+            onRecover = { state.toParkingLot() }
         )
     }
 }

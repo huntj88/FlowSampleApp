@@ -45,7 +45,8 @@ open class ColorFlowController: GeneratedColorController() {
     override suspend fun onColorSelected(state: ColorSelected): FromColorSelected {
         return this.flow(fragmentProxy = selectedColorFragment, input = state.data).forResult(
             onComplete = { state.toGatherData() },
-            onBack = { state.toGatherData() }
+            onBack = { state.toGatherData() },
+            onRecover = { state.toGatherData() }
         )
     }
 }

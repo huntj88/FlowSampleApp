@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.inmotionsoftware.promisekt.Promise
-import com.inmotionsoftware.promisekt.features.race
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.selects.select
+import me.jameshunt.flow.FlowResult
 import me.jameshunt.flow.FragmentFlowController
 import me.jameshunt.flow.FragmentGroupFlowController
 import me.jameshunt.inmotiontestapplication.R
-import me.jameshunt.inmotiontestapplication.flow.group.pager.ViewPagerGroupController.*
+import me.jameshunt.inmotiontestapplication.flow.group.pager.ViewPagerGroupController.InternalInput
 
 class ViewPagerGroupController : FragmentGroupFlowController<InternalInput, Unit>(R.layout.group_view_pager) {
 
@@ -96,15 +98,25 @@ class ViewPagerGroupController : FragmentGroupFlowController<InternalInput, Unit
     }
 
     override suspend fun startFlowInGroup(groupInput: InternalInput): State {
-        val pageZero = this.flow(controller = groupInput.pageZero, viewId = R.id.groupPagerZero, input = Unit)
-        val pageOne = this.flow(controller = groupInput.pageOne, viewId = R.id.groupPagerOne, input = Unit)
-        val pageTwo = this.flow(controller = groupInput.pageTwo, viewId = R.id.groupPagerTwo, input = Unit)
+        return coroutineScope {
+            val pageZero = async {
+                flow(controller = groupInput.pageZero, viewId = R.id.groupPagerZero, input = Unit)
+            }
+            val pageOne = async {
+                flow(controller = groupInput.pageOne, viewId = R.id.groupPagerOne, input = Unit)
+            }
+            val pageTwo = async {
+                flow(controller = groupInput.pageTwo, viewId = R.id.groupPagerTwo, input = Unit)
+            }
 
-//        return race(pageZero, pageOne, pageTwo).forResult<Unit, State>(
-//            onBack = { Promise.value(Back) },
-//            onComplete = { Promise.value(Done(it)) }
-//        )
-
-        TODO()
+            select<FlowResult<Unit>> {
+                pageZero.onAwait { it }
+                pageOne.onAwait { it }
+                pageTwo.onAwait { it }
+            }.forResult(
+                onBack = { Back },
+                onComplete = { Done(it) }
+            )
+        }
     }
 }

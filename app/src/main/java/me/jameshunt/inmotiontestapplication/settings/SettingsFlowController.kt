@@ -1,6 +1,5 @@
 package me.jameshunt.inmotiontestapplication.settings
 
-import com.inmotionsoftware.promisekt.Promise
 import me.jameshunt.flow.SimpleGroupController
 import me.jameshunt.flow.castFromInput
 import me.jameshunt.flow.generated.GeneratedSettingController
