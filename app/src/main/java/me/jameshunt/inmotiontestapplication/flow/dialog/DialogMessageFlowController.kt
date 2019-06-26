@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.inmotionsoftware.promisekt.Promise
-import com.inmotionsoftware.promisekt.thenMap
 import kotlinx.android.synthetic.main.dialog_fragment_message.*
 import me.jameshunt.flow.FlowDialogFragment
 import me.jameshunt.flow.generated.GeneratedDialogTestController

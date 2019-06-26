@@ -3,7 +3,6 @@ package me.jameshunt.inmotiontestapplication.flow.external
 import android.content.Context
 import android.content.Intent
 import android.provider.MediaStore
-import com.inmotionsoftware.promisekt.Promise
 import me.jameshunt.flow.ActivityAdapterFlowController
 import me.jameshunt.flow.FlowResult
 import me.jameshunt.inmotiontestapplication.flow.external.PhotoPickerFlowController.Output

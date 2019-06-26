@@ -7,7 +7,6 @@ dependencies {
 
     implementation project(':Flow')
     testImplementation project(':FlowTest')
-    implementation project(':PromiseKt')
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.2'
 

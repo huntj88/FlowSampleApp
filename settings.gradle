@@ -1,6 +1,5 @@
-include ':app', ':business', ':Flow', ':FlowTest', ':FlowAndroid', ':FlowAndroidTest', ':PromiseKt'
+include ':app', ':business', ':Flow', ':FlowTest', ':FlowAndroid', ':FlowAndroidTest'
 project(':Flow').projectDir = new File('../FlowV2/Flow')
 project(':FlowTest').projectDir = new File('../FlowV2/FlowTest')
 project(':FlowAndroid').projectDir = new File('../FlowV2/FlowAndroid')
 project(':FlowAndroidTest').projectDir = new File('../FlowV2/FlowAndroidTest')
-project(':PromiseKt').projectDir = new File('../promisekt')

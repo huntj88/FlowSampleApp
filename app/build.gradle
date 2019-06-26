@@ -44,7 +44,6 @@ dependencies {
     implementation project(':Flow')
     implementation project(':FlowAndroid')
     testImplementation project(':FlowAndroidTest')
-    implementation project(':PromiseKt')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
