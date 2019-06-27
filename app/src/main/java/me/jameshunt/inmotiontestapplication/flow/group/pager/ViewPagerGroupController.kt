@@ -8,10 +8,9 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.selects.select
-import me.jameshunt.flow.FlowResult
 import me.jameshunt.flow.FragmentFlowController
 import me.jameshunt.flow.FragmentGroupFlowController
+import me.jameshunt.flow.awaitFirst
 import me.jameshunt.inmotiontestapplication.R
 import me.jameshunt.inmotiontestapplication.flow.group.pager.ViewPagerGroupController.InternalInput
 
@@ -109,11 +108,7 @@ class ViewPagerGroupController : FragmentGroupFlowController<InternalInput, Unit
                 flow(controller = groupInput.pageTwo, viewId = R.id.groupPagerTwo, input = Unit)
             }
 
-            select<FlowResult<Unit>> {
-                pageZero.onAwait { it }
-                pageOne.onAwait { it }
-                pageTwo.onAwait { it }
-            }.forResult(
+            listOf(pageZero,pageOne, pageTwo).awaitFirst().forResult(
                 onBack = { Back },
                 onComplete = { Done(it) }
             )
