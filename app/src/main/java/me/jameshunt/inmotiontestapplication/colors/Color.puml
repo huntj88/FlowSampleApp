@@ -1,7 +1,9 @@
+import me.jameshunt.inmotiontestapplication.colors.Color
+
 @startuml
 
-ShowColors: val data: me.jameshunt.inmotiontestapplication.colors.Colors
-ColorSelected: val data: me.jameshunt.inmotiontestapplication.colors.Color
+ShowColors: val data: List<Color>
+ColorSelected: val data: Color
 
 [*] -> GatherData
 GatherData --> ShowColors

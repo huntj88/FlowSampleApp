@@ -11,7 +11,7 @@ open class ColorFlowController: GeneratedColorController() {
     private val selectedColorFragment = proxy(SelectedColorFragment::class.java)
 
     override fun onGatherData(state: GatherData): Promise<FromGatherData> {
-        val colors = Colors(listOf(
+        val colors = listOf(
             Color(255,0,0),
             Color(0,255,0),
             Color(0,0,255),
@@ -30,7 +30,7 @@ open class ColorFlowController: GeneratedColorController() {
             Color(0,0,0),
             Color(255,255,255),
             Color(125,125,125)
-        ))
+        )
 
         return state.toShowColors(colors)
     }

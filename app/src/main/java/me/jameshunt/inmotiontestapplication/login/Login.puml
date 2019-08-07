@@ -1,8 +1,10 @@
+import me.jameshunt.inmotiontestapplication.login.LoginFragment.LoginFormData
+
 @startuml
 
 [*] -> LoginForm
 
-CheckCredentials : val formData: me.jameshunt.inmotiontestapplication.login.LoginFragment.LoginFormData
+CheckCredentials : val formData: LoginFormData
 
 LoginForm ---> CheckCredentials
 LoginForm --> Back

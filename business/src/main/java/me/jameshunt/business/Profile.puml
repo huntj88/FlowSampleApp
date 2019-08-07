@@ -1,8 +1,10 @@
+import me.jameshunt.business.Profile
+
 @startuml
 
-SaveProfile : val formData: me.jameshunt.business.Profile
+SaveProfile : val formData: Profile
 
-Done : val formData: me.jameshunt.business.Profile
+Done : val formData: Profile
 
 [*] -> GetProfile
 GetProfile --> ProfileRequest

@@ -1,6 +1,8 @@
+import me.jameshunt.flow.DeepLinkData
+
 @startuml
 
-Splash : val data: me.jameshunt.flow.DeepLinkData
+Splash : val data: DeepLinkData
 
 [*] -> Splash
 Splash --> Load

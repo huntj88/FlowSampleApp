@@ -17,24 +17,22 @@ class ColorFlowControllerTest : ColorFlowController(), AsyncTests {
     fun onGatherDataTest() {
         this.onGatherData(GatherData)
             .get { println(it) }
-            .done { assertTrue((it as ShowColors).data.colors[2].blue == 255) }
+            .done { assertTrue((it as ShowColors).data[2].blue == 255) }
             .throwCaughtErrors()
     }
 
     @Test
     fun onShowColorsFragmentMockTest() {
 
-        val data = Colors(
-            listOf(
+        val data = listOf(
                 Color(0, 0, 4),
                 Color(0, 0, 5)
             )
-        )
 
         flowTest {
             mockFragment(ColorsListFragment::class.java) { fragmentInput ->
                 // mocked fragment output
-                fragmentInput.colors.last()
+                fragmentInput.last()
             }
         }
 
@@ -57,7 +55,7 @@ class ColorFlowControllerTest : ColorFlowController(), AsyncTests {
             }
         }
 
-        this.onShowColors(state = ShowColors(Colors(listOf())))
+        this.onShowColors(state = ShowColors(listOf()))
             .done { fail() }
             .catch {
                 assertTrue("caught exception", true)
