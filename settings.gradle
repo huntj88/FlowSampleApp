@@ -1,5 +1,5 @@
 include ':app', ':business', ':Flow', ':FlowTest', ':FlowAndroid', ':FlowAndroidTest'
-project(':Flow').projectDir = new File('../FlowV2/Flow')
-project(':FlowTest').projectDir = new File('../FlowV2/FlowTest')
-project(':FlowAndroid').projectDir = new File('../FlowV2/FlowAndroid')
-project(':FlowAndroidTest').projectDir = new File('../FlowV2/FlowAndroidTest')
+project(':Flow').projectDir = new File('../Flow/Flow')
+project(':FlowTest').projectDir = new File('../Flow/FlowTest')
+project(':FlowAndroid').projectDir = new File('../Flow/FlowAndroid')
+project(':FlowAndroidTest').projectDir = new File('../Flow/FlowAndroidTest')
