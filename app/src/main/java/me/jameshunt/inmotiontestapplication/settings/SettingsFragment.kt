@@ -19,7 +19,7 @@ class SettingsFragment: FlowFragment<Unit, SettingsFragment.Output>() {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
-    override fun flowWillRun(input: Unit) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         this.userSettingsButton.setOnClickListener {
             this.resolve(Output.UserSettings)
         }

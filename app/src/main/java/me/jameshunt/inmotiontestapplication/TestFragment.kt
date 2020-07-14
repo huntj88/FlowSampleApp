@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import me.jameshunt.flow.FlowFragment
+import me.jameshunt.flow.FlowUIInput
 
 class TestFragment: FlowFragment<String, Unit>() {
 
@@ -20,7 +21,14 @@ class TestFragment: FlowFragment<String, Unit>() {
         }
     }
 
-    override fun flowWillRun(input: String) {
-        (this.view as TextView).text = input
+    override fun onResume() {
+        super.onResume()
+        when(val input = getAndConsumeInputData()) {
+            is FlowUIInput.NewData -> (this.view as TextView).text = input.data
+            is FlowUIInput.ResumeSavedState -> {
+                // do nothing
+            }
+        }
+
     }
 }

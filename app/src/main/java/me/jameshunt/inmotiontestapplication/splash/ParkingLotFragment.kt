@@ -15,11 +15,15 @@ class ParkingLotFragment : FlowFragment<Unit, ParkingLotFragment.Output>() {
         Login
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_parking_lot, container, false)
     }
 
-    override fun flowWillRun(input: Unit) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         this.loginButton.setOnClickListener {
             this.resolve(Output.Login)
         }

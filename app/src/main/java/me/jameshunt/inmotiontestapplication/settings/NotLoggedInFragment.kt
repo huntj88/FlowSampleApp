@@ -14,7 +14,8 @@ class NotLoggedInFragment: FlowFragment<Unit, Unit>() {
         return inflater.inflate(R.layout.fragment_not_logged_in, container, false)
     }
 
-    override fun flowWillRun(input: Unit) {
+    override fun onResume() {
+        super.onResume()
         this.loginButton.setOnClickListener {
             this.resolve(Unit)
         }

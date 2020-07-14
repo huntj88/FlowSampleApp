@@ -13,7 +13,8 @@ class SplashFragment : FlowFragment<Unit, Unit>() {
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
 
-    override fun flowWillRun(input: Unit) {
+    override fun onResume() {
+        super.onResume()
         this.resolve(Unit)
     }
 }

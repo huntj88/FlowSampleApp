@@ -29,6 +29,4 @@ class LoginFragment : FlowFragment<Unit, LoginFragment.LoginFormData>() {
             this.resolve(output)
         }
     }
-
-    override fun flowWillRun(input: Unit) {}
 }

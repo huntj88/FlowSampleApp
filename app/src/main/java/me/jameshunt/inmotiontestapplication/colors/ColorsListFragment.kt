@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_recycler.*
 import me.jameshunt.flow.FlowFragment
+import me.jameshunt.flow.FlowUIInput
 import me.jameshunt.inmotiontestapplication.R
 
 class ColorsListFragment : FlowFragment<List<Color>, Color>() {
@@ -18,21 +19,35 @@ class ColorsListFragment : FlowFragment<List<Color>, Color>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val colors = savedInstanceState?.getParcelableArrayList("colors") ?: emptyList<Color>()
+        this.recyclerView.adapter = ColorsAdapter(colors)
         this.recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
-    override fun flowWillRun(input: List<Color>) {
-        updateAdapter(input)
+    override fun onResume() {
+        super.onResume()
+        (getAndConsumeInputData() as? FlowUIInput.NewData)?.let {
+            updateAdapter(it.data)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val colors = this.recyclerView.adapter
+            .let { it as ColorsAdapter }
+            .colors
+
+        outState.putParcelableArrayList("colors", ArrayList(colors))
     }
 
     private fun updateAdapter(newColors: List<Color>) {
         this.recyclerView.adapter
-            ?.let { it as? ColorsAdapter }
-            ?.let {
+            .let { it as ColorsAdapter }
+            .let {
                 if(newColors != it.colors) {
                     diffItems(newColors)
                 }
-            } ?: run { this.recyclerView.adapter = ColorsAdapter(newColors) }
+            }
     }
 
     private fun diffItems(newColors: List<Color>) {

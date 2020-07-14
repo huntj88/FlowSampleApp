@@ -8,6 +8,7 @@ import com.inmotionsoftware.promisekt.Promise
 import com.inmotionsoftware.promisekt.thenMap
 import kotlinx.android.synthetic.main.dialog_fragment_message.*
 import me.jameshunt.flow.FlowDialogFragment
+import me.jameshunt.flow.FlowUIInput
 import me.jameshunt.flow.generated.GeneratedDialogTestController
 import me.jameshunt.flow.generated.GeneratedDialogTestController.DialogTestFlowState.FromShowDialog
 import me.jameshunt.flow.generated.GeneratedDialogTestController.DialogTestFlowState.ShowDialog
@@ -34,7 +35,10 @@ class DialogMessage : FlowDialogFragment<String, Unit>() {
         okButton.setOnClickListener { resolve(Unit) }
     }
 
-    override fun flowWillRun(input: String) {
-        messageTextView?.text = input
+    override fun onResume() {
+        super.onResume()
+        (getAndConsumeInputData() as? FlowUIInput.NewData)?.let {
+            messageTextView?.text = it.data
+        }
     }
 }
