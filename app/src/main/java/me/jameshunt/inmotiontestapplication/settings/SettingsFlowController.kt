@@ -1,6 +1,5 @@
 package me.jameshunt.inmotiontestapplication.settings
 
-import com.inmotionsoftware.promisekt.Promise
 import me.jameshunt.flow.SimpleGroupController
 import me.jameshunt.flow.castFromInput
 import me.jameshunt.flow.generated.GeneratedSettingController
@@ -15,12 +14,12 @@ class SettingsFlowController : GeneratedSettingController() {
     private val userSettingsFragment = proxy(UserSettingsFragment::class.java)
     private val notLoggedInFragment = proxy(NotLoggedInFragment::class.java)
 
-    override fun onSettings(state: Settings): Promise<FromSettings> {
-        ProfileManager.profile?: return Promise.value(NotLoggedIn)
+    override suspend fun onSettings(state: Settings): FromSettings {
+        ProfileManager.profile?: return NotLoggedIn
 
         return this.flow(fragmentProxy = settingsFragment, input = Unit)
             .forResult<SettingsFragment.Output, FromSettings>(
-                onBack = { Promise.value(Back) },
+                onBack = { Back },
                 onComplete = {
                     when (it) {
                         SettingsFragment.Output.UserSettings -> state.toUserSettings()
@@ -30,7 +29,7 @@ class SettingsFlowController : GeneratedSettingController() {
             )
     }
 
-    override fun onUserSettings(state: UserSettings): Promise<FromUserSettings> {
+    override suspend fun onUserSettings(state: UserSettings): FromUserSettings {
         val input = ProfileManager.profile!!
             .let { UserSettingsFragment.Data(firstName = it.firstName, lastName = it.lastName) }
 
@@ -47,12 +46,12 @@ class SettingsFlowController : GeneratedSettingController() {
             )
     }
 
-    override fun onLogout(state: Logout): Promise<FromLogout> {
+    override suspend fun onLogout(state: Logout): FromLogout {
         ProfileManager.profile = null
-        return Promise.value(Settings)
+        return Settings
     }
 
-    override fun onNotLoggedIn(state: NotLoggedIn): Promise<FromNotLoggedIn> {
+    override suspend fun onNotLoggedIn(state: NotLoggedIn): FromNotLoggedIn {
         return this.flow(fragmentProxy = notLoggedInFragment, input = Unit)
             .forResult(
                 onBack = { state.toBack() },
@@ -60,7 +59,7 @@ class SettingsFlowController : GeneratedSettingController() {
             )
     }
 
-    override fun onLogin(state: Login): Promise<FromLogin> {
+    override suspend fun onLogin(state: Login): FromLogin {
         val input = SimpleGroupController.input(
             flow = LoginFlowController::class.java,
             input = Unit

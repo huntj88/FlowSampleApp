@@ -21,7 +21,7 @@ class PhotoPickerFlowController : ActivityAdapterFlowController<PhotoType, Outpu
         data class Uri(val value: android.net.Uri) : Output()
     }
 
-    override fun handleIOActivityIntents(context: () -> Context, flowInput: PhotoType): Promise<FlowResult<Output>> {
+    override suspend fun handleIOActivityIntents(context: () -> Context, flowInput: PhotoType): FlowResult<Output> {
         val getIntent = Intent(Intent.ACTION_GET_CONTENT)
         getIntent.type = "image/*"
 

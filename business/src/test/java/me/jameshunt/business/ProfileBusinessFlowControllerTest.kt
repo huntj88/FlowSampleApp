@@ -13,10 +13,10 @@ class ProfileBusinessFlowControllerTest : ProfileBusinessFlowController() {
         flowTest {}
     }
 
-    @Test
-    fun onProfileRequestTest() {
-        this.onProfileRequest(ProfileRequest)
-            .map { assertTrue((it as SaveProfile).formData.firstName == "wow") }
-            .catch { fail() }
-    }
+//    @Test
+//    fun onProfileRequestTest() {
+//        this.onProfileRequest(ProfileRequest)
+//            .map { assertTrue((it as SaveProfile).formData.firstName == "wow") }
+//            .catch { fail() }
+//    }
 }
